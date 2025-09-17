@@ -1,0 +1,12 @@
+{
+  "signature": "nxtpYJoiF0Xboh9yKMsHTSm4YP9AneEN0wzWcKJwZzp9X2mnzkRFuxQ81V46TDYZBakkZfOXBCz/phDtQ6VyCwJP+T23RsbfshXecA1LfJzGq2VVu/WSqxLBOJ4CER28L/22gxidrg8JhRtD+4vhKqJU3BOfbduCj1MTqtTlsX30nyRb7JxrQ+64BjlkccQ+jKwEEb3EYvqJ7yfs0kFdvP3It3Mukb+yJPM2AJpVvoRoncjmG/SkB3Ugz3sOz82MqNSru1TgQ8/vhJqO14xV6MrMx9pagBEYd4PgUYipg+WWJ9oQgeAEMsCC/A3F/UpJDPMP6qEB8E67U2Cr4XWnSg==",
+  "algorithm": "RSA-SHA256",
+  "key_size": 2048,
+  "signed_data": {
+    "certificate_id": "CERT-20250917143627-4d4bc571",
+    "created_at": "2025-09-17T09:06:27.341959+00:00",
+    "json_hash": "b30a0ea9ae89f0456c602471faa81b27d184d7825e917b931c25163af1d45f43",
+    "pdf_hash": "ce97e2539a01c987eefc189d8dfb43996b685863220beeca34d995b275104627"
+  },
+  "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArVIHBh2/inOi+PRKrXec\niHXhE4qxIc8UZltH+IVQAbFlyVyrSDsBzIe4h8ugoY6Uf8JPFxNAV4GZU/z0rQ8X\nClfOtqsjnpv7FHzXFvaD1nqXMd5RamL60tae7KjlmB8vAer+4ZmRhZf6HzMzF105\nuEEnwLwULRsfpPdVKfrVto3Mu+ukyE3LgYNbejATviJXfB9wK0iiG9AaGoTvutKq\n4OEpSORSxMSrbgX1TbGYhxi7mFOQRNs2107V/pz3UdseTbmGmHFWr+feb4vHGPtD\nPLmB4noGFYV7yRp7V04Wg5rMHJ8gTbodQeQAmXeI9AbfNXnKBQ9ImjirhWrIKkIY\nnQIDAQAB\n-----END PUBLIC KEY-----\n"
+}

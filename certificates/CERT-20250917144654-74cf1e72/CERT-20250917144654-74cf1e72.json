@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250917144654-74cf1e72",
+    "created_at": "2025-09-17T09:16:54.342675+00:00",
+    "expires_at": "2026-09-17T09:16:54.342675+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 21,
+    "name": "yjtfg",
+    "organization": "hgv"
+  },
+  "device": {
+    "serial": "1264654",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "\"C:\\test\\mergesort.exe\"",
+    "size_bytes": 46694,
+    "size_human": "45.6 KB",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.004331,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "c99a6a3f9e18e41c96e210cac72924a4c5e53d2d7d258a15e7ef58a07a65856a",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

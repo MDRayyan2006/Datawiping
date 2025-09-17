@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250916120201-ac77d5d3",
+    "created_at": "2025-09-16T06:32:01.193349+00:00",
+    "expires_at": "2026-09-16T06:32:01.193349+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 8,
+    "name": "Karthik",
+    "organization": "OG"
+  },
+  "device": {
+    "serial": "10BE4X342S0005A",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "C:\\karthik",
+    "size_bytes": 0,
+    "size_human": "0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.002242,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "969f29abc4287cf145f7050aad5a1d9f075a2bc7ebecd6197d4ca3b8fbbda37e",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

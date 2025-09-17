@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250916110942-5cc385b9",
+    "created_at": "2025-09-16T05:39:42.281946+00:00",
+    "expires_at": "2026-09-16T05:39:42.281946+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 6,
+    "name": "kr156",
+    "organization": "iit bombay"
+  },
+  "device": {
+    "serial": "123123123",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "C:\\KARTHIK",
+    "size_bytes": 0,
+    "size_human": "0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.000546,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "b61187bfcad2b62e2e23d7c7ac569c99a78cce3eb255b7db65232b7a277391ab",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

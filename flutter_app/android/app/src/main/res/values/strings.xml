@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DataWipe</string>
+    
+    <!-- Security related strings -->
+    <string name="security_biometric_title">Biometric Authentication</string>
+    <string name="security_biometric_description">Use your biometric to access secure data</string>
+    <string name="security_encryption_enabled">Encryption Enabled</string>
+    <string name="security_encryption_disabled">Encryption Disabled</string>
+    <string name="security_key_rotation">Key Rotation</string>
+    <string name="security_secure_wipe">Secure Wipe</string>
+    
+    <!-- Error messages -->
+    <string name="error_encryption_failed">Encryption failed</string>
+    <string name="error_decryption_failed">Decryption failed</string>
+    <string name="error_biometric_not_available">Biometric authentication not available</string>
+    <string name="error_biometric_not_enrolled">No biometrics enrolled</string>
+    <string name="error_biometric_cancelled">Biometric authentication cancelled</string>
+    
+    <!-- Success messages -->
+    <string name="success_encryption_enabled">Encryption enabled successfully</string>
+    <string name="success_biometric_enabled">Biometric authentication enabled</string>
+    <string name="success_keys_rotated">Encryption keys rotated successfully</string>
+    <string name="success_secure_wipe">Secure wipe completed</string>
+</resources>

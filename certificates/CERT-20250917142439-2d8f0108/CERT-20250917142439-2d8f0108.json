@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250917142439-2d8f0108",
+    "created_at": "2025-09-17T08:54:39.542499+00:00",
+    "expires_at": "2026-09-17T08:54:39.542499+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 19,
+    "name": "hi",
+    "organization": "ojhgfd"
+  },
+  "device": {
+    "serial": "123456789",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "\"C:\\Users\\test\"",
+    "size_bytes": 0,
+    "size_human": "0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.523131,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "ba6c64e047e5a7d5bf05f06b1459bcfcfb85ddc720a646a44591a4b669c2bb57",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

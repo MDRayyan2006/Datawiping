@@ -1,0 +1,10 @@
+fastapi>=0.116.0
+uvicorn[standard]>=0.24.0
+# SQLAlchemy needs a version compatible with Python 3.13 typing changes
+sqlalchemy>=2.0.43
+# Pydantic compatible with Python 3.13
+pydantic[email]>=2.9.2,<3.0.0
+python-multipart==0.0.6
+psutil>=5.9.6
+cryptography>=41.0.7
+reportlab>=4.0.4

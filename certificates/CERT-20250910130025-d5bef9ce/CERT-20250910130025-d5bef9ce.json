@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250910130025-d5bef9ce",
+    "created_at": "2025-09-10T07:30:25.276940+00:00",
+    "expires_at": "2026-09-10T07:30:25.276940+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 2,
+    "name": "Rayyan1",
+    "organization": "KR pvt.ltd"
+  },
+  "device": {
+    "serial": "683E-FA471",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "\\\\.\\PhysicalDriveA",
+    "size_bytes": 0,
+    "size_human": "0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.562055,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "0bd75d2a0dfd5f69f541a6cdc20e7a69ca34c111e55f166b7e650464b6844a60",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

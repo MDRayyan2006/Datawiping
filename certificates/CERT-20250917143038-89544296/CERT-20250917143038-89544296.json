@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250917143038-89544296",
+    "created_at": "2025-09-17T09:00:38.274922+00:00",
+    "expires_at": "2026-09-17T09:00:38.274922+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 20,
+    "name": "hui",
+    "organization": "fgg"
+  },
+  "device": {
+    "serial": "123456",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "overwrite",
+    "status": "verified",
+    "target_path": "\"C:\\Users\\test\"",
+    "size_bytes": 0,
+    "size_human": "0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.54015,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "4a35fa2a3bcb70ec3e555d5097c49f585bab4095b4c0b3b417fdafbbfd2f3ba2",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

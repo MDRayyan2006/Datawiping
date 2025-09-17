@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataWipe - Secure Data Wiping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #5a6fd8;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #e1e5e9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #667eea;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .device-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .device-item {
+            padding: 15px;
+            border-bottom: 1px solid #e1e5e9;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .device-item:hover {
+            background: #f8f9fa;
+        }
+
+        .device-item.selected {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+
+        .device-item:last-child {
+            border-bottom: none;
+        }
+
+        .device-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .device-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .device-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+
+        .warning h3 {
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .job-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .job-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .job-status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .job-status.running {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .job-status.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔒 DataWipe</h1>
+            <p>Secure Data Wiping Application</p>
+        </div>
+
+        <div class="warning">
+            <h3>⚠️ WARNING</h3>
+            <p>This tool will permanently destroy all data on selected drives. This action cannot be undone. Ensure you have backed up any important data before proceeding.</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('dashboard')">Dashboard</div>
+            <div class="tab" onclick="showTab('wipe')">Wipe Data</div>
+            <div class="tab" onclick="showTab('history')">History</div>
+            <div class="tab" onclick="showTab('settings')">Settings</div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="card">
+                <h2>📊 System Overview</h2>
+                <div class="grid">
+                    <div>
+                        <h3>Detected Devices</h3>
+                        <div id="deviceCount" class="device-details">Loading...</div>
+                    </div>
+                    <div>
+                        <h3>Recent Jobs</h3>
+                        <div id="recentJobs" class="device-details">Loading...</div>
+                    </div>
+                    <div>
+                        <h3>System Status</h3>
+                        <div id="systemStatus" class="device-details">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💾 Storage Devices</h2>
+                <div class="device-list" id="deviceList">
+                    <div class="device-item">Loading devices...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wipe Tab -->
+        <div id="wipe" class="tab-content">
+            <div class="card">
+                <h2>🗑️ Secure Data Wipe</h2>
+                <form id="wipeForm">
+                    <div class="form-group">
+                        <label for="userName">User Name:</label>
+                        <input type="text" id="userName" name="userName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="organization">Organization:</label>
+                        <input type="text" id="organization" name="organization" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deviceSerial">Device Serial:</label>
+                        <input type="text" id="deviceSerial" name="deviceSerial" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetDevice">Target Device:</label>
+                        <div class="device-list" id="wipeDeviceList">
+                            <div class="device-item">Loading devices...</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wipeMethod">Wipe Method:</label>
+                        <select id="wipeMethod" name="wipeMethod" required>
+                            <option value="dod_5220_22_m">DoD 5220.22-M (3 passes)</option>
+                            <option value="nist_800_88">NIST 800-88 (1-3 passes)</option>
+                            <option value="gutmann">Gutmann Method (35 passes)</option>
+                            <option value="single_pass">Single Pass</option>
+                            <option value="random_data">Random Data (3 passes)</option>
+                            <option value="zero_overwrite">Zero Overwrite</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="generateCertificate" checked>
+                            Generate Certificate
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (Optional):</label>
+                        <textarea id="notes" name="notes" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger" id="startBtn">Start Secure Wipe</button>
+                </form>
+
+                <div class="progress hidden" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="status" id="status"></div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="history" class="tab-content">
+            <div class="card">
+                <h2>📋 Wipe History</h2>
+                <div id="historyList">
+                    <div class="device-item">Loading history...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <h2>⚙️ Settings</h2>
+                <div class="form-group">
+                    <label for="apiUrl">API Base URL:</label>
+                    <input type="text" id="apiUrl" value="http://localhost:8000/api/v1">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="mockMode">
+                        Enable Mock Mode (for testing)
+                    </label>
+                </div>
+                <button class="btn btn-secondary" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+        let selectedDevice = null;
+        let currentUser = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            loadDashboard();
+            loadDevices();
+            loadHistory();
+        });
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Settings
+        function loadSettings() {
+            const apiUrl = localStorage.getItem('apiUrl') || 'http://localhost:8000/api/v1';
+            const mockMode = localStorage.getItem('mockMode') === 'true';
+            
+            document.getElementById('apiUrl').value = apiUrl;
+            document.getElementById('mockMode').checked = mockMode;
+        }
+
+        function saveSettings() {
+            const apiUrl = document.getElementById('apiUrl').value;
+            const mockMode = document.getElementById('mockMode').checked;
+            
+            localStorage.setItem('apiUrl', apiUrl);
+            localStorage.setItem('mockMode', mockMode);
+            
+            showStatus('Settings saved successfully!', 'success');
+        }
+
+        // Dashboard functions
+        async function loadDashboard() {
+            try {
+                // Load device count
+                const devicesResponse = await fetch(`${API_BASE}/devices/`);
+                const devices = await devicesResponse.json();
+                document.getElementById('deviceCount').textContent = `${devices.length} devices detected`;
+
+                // Load recent jobs
+                const jobsResponse = await fetch(`${API_BASE}/jobs/`);
+                const jobsData = await jobsResponse.json();
+                const jobs = jobsData.jobs || [];
+                document.getElementById('recentJobs').textContent = `${jobs.length} total jobs`;
+
+                // Load system status
+                const healthResponse = await fetch(`${API_BASE}/../health`);
+                const health = await healthResponse.json();
+                document.getElementById('systemStatus').textContent = health.status === 'healthy' ? 'System Online' : 'System Offline';
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('deviceCount').textContent = 'Error loading devices';
+                document.getElementById('recentJobs').textContent = 'Error loading jobs';
+                document.getElementById('systemStatus').textContent = 'System Offline';
+            }
+        }
+
+        // Device functions
+        async function loadDevices() {
+            try {
+                const response = await fetch(`${API_BASE}/devices/`);
+                const devices = await response.json();
+                
+                const deviceList = document.getElementById('deviceList');
+                const wipeDeviceList = document.getElementById('wipeDeviceList');
+                
+                if (devices.length === 0) {
+                    deviceList.innerHTML = '<div class="device-item">No devices found</div>';
+                    wipeDeviceList.innerHTML = '<div class="device-item">No devices found</div>';
+                    return;
+                }
+                
+                const deviceHTML = devices.map(device => `
+                    <div class="device-item" onclick="selectDevice('${device.device}', this)">
+                        <div class="device-info">
+                            <div>
+                                <div class="device-name">${device.model || device.device}</div>
+                                <div class="device-details">${device.device_type} • ${device.size_human} • ${device.device}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                deviceList.innerHTML = deviceHTML;
+                wipeDeviceList.innerHTML = deviceHTML;
+                
+            } catch (error) {
+                console.error('Error loading devices:', error);
+                document.getElementById('deviceList').innerHTML = '<div class="device-item">Error loading devices</div>';
+                document.getElementById('wipeDeviceList').innerHTML = '<div class="device-item">Error loading devices</div>';
+            }
+        }
+
+        function selectDevice(devicePath, element) {
+            // Remove previous selection
+            document.querySelectorAll('.device-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Select new device
+            element.classList.add('selected');
+            selectedDevice = devicePath;
+        }
+
+        // Wipe functions
+        document.getElementById('wipeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!selectedDevice) {
+                showStatus('Please select a target device', 'error');
+                return;
+            }
+            
+            const formData = new FormData(e.target);
+            const data = {
+                user_id: 1,
+                target_path: selectedDevice,
+                wipe_method: formData.get('wipeMethod'),
+                generate_certificate: document.getElementById('generateCertificate').checked,
+                mock_mode: document.getElementById('mockMode').checked,
+                notes: formData.get('notes')
+            };
+            
+            try {
+                // Register user first
+                const userResponse = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: formData.get('userName'),
+                        org: formData.get('organization'),
+                        device_serial: formData.get('deviceSerial')
+                    })
+                });
+                
+                if (!userResponse.ok) {
+                    throw new Error('Failed to register user');
+                }
+                
+                const user = await userResponse.json();
+                data.user_id = user.id;
+                currentUser = user;
+                
+                // Start wipe job
+                const jobResponse = await fetch(`${API_BASE}/jobs/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!jobResponse.ok) {
+                    throw new Error('Failed to start wipe job');
+                }
+                
+                const job = await jobResponse.json();
+                showStatus(`Wipe job started: ${job.job_id}`, 'info');
+                
+                // Monitor progress
+                monitorJob(job.job_id);
+                
+            } catch (error) {
+                showStatus('Error: ' + error.message, 'error');
+            }
+        });
+
+        async function monitorJob(jobId) {
+            const startBtn = document.getElementById('startBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            
+            startBtn.disabled = true;
+            startBtn.textContent = 'Wipe in Progress...';
+            progressContainer.classList.remove('hidden');
+            
+            const interval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_BASE}/jobs/${jobId}/status`);
+                    const status = await response.json();
+                    
+                    if (status.status === 'completed') {
+                        clearInterval(interval);
+                        updateProgress(100);
+                        showStatus('Wipe completed successfully!', 'success');
+                        startBtn.textContent = 'Wipe Completed';
+                        loadHistory(); // Refresh history
+                    } else if (status.status === 'failed') {
+                        clearInterval(interval);
+                        showStatus('Wipe failed: ' + (status.error_message || 'Unknown error'), 'error');
+                        startBtn.disabled = false;
+                        startBtn.textContent = 'Start Secure Wipe';
+                        progressContainer.classList.add('hidden');
+                    } else if (status.status === 'running') {
+                        const progress = status.progress?.percent || 0;
+                        updateProgress(progress);
+                        showStatus(`Wipe in progress: ${status.progress_message || 'Processing...'}`, 'info');
+                    }
+                } catch (error) {
+                    clearInterval(interval);
+                    showStatus('Error monitoring job: ' + error.message, 'error');
+                    startBtn.disabled = false;
+                    startBtn.textContent = 'Start Secure Wipe';
+                    progressContainer.classList.add('hidden');
+                }
+            }, 2000);
+        }
+
+        // History functions
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_BASE}/jobs/`);
+                const data = await response.json();
+                const jobs = data.jobs || [];
+                
+                const historyList = document.getElementById('historyList');
+                
+                if (jobs.length === 0) {
+                    historyList.innerHTML = '<div class="device-item">No wipe jobs found</div>';
+                    return;
+                }
+                
+                const historyHTML = jobs.map(job => `
+                    <div class="job-item">
+                        <div class="device-info">
+                            <div>
+                                <div class="device-name">Job ${job.job_id}</div>
+                                <div class="device-details">
+                                    Target: ${job.target_path} | 
+                                    Method: ${job.wipe_method} | 
+                                    Status: <span class="job-status ${job.status}">${job.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                historyList.innerHTML = historyHTML;
+                
+            } catch (error) {
+                console.error('Error loading history:', error);
+                document.getElementById('historyList').innerHTML = '<div class="device-item">Error loading history</div>';
+            }
+        }
+
+        // Utility functions
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function updateProgress(percent) {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percent + '%';
+        }
+    </script>
+</body>
+</html>
