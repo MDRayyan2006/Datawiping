@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250920100716-e61ef2e3",
+    "created_at": "2025-09-20T04:37:16.938786+00:00",
+    "expires_at": "2026-09-20T04:37:16.938786+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "organization": "Test Organization"
+  },
+  "device": {
+    "serial": "TEST001-2024",
+    "model": "Test SSD 1TB",
+    "type": "SSD"
+  },
+  "wipe_operation": {
+    "method": "dod_5220_22_m",
+    "status": "completed",
+    "target_path": "/test/path/file.txt",
+    "size_bytes": 1048576,
+    "size_human": "1.0 MB",
+    "passes_completed": 3,
+    "total_passes": 3,
+    "duration_seconds": 1.5,
+    "verification_hash": "abc123def456"
+  },
+  "verification": {
+    "certificate_hash": "2ba9970b277e66230a2d615f05fbd8c89e031bb7fd21f12cf14068063c9469b6",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

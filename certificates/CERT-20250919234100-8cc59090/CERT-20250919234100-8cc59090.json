@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250919234100-8cc59090",
+    "created_at": "2025-09-19T18:11:00.591563+00:00",
+    "expires_at": "2026-09-19T18:11:00.591563+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 1,
+    "name": "Rayyan",
+    "organization": "KR pvt.ltd"
+  },
+  "device": {
+    "serial": "683E-FA47",
+    "model": "Unknown",
+    "type": "Unknown"
+  },
+  "wipe_operation": {
+    "method": "single_pass",
+    "status": "completed",
+    "target_path": "C:\\Users\\study\\AppData\\Local\\Temp\\tmpr6524_9_.test",
+    "size_bytes": 40,
+    "size_human": "40.0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.1,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "504620004cfd83ad3b44d021bde8ebdf683715fa911194e2d13fc1c8ffbf0ee8",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

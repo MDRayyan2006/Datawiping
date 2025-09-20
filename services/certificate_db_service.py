@@ -49,6 +49,10 @@ class CertificateDBService:
         return self.db.query(WipeCertificate).filter(
             WipeCertificate.certificate_id == certificate_id
         ).first()
+    
+    async def get_certificate_by_id(self, certificate_id: str) -> Optional[WipeCertificate]:
+        """Get a certificate by ID (alias for get_certificate)"""
+        return await self.get_certificate(certificate_id)
 
     async def get_certificates_by_user(self, user_id: int, skip: int = 0, limit: int = 100) -> List[WipeCertificate]:
         """Get certificates for a specific user"""

@@ -1,0 +1,35 @@
+{
+  "certificate": {
+    "id": "CERT-20250919223525-2e7e1719",
+    "created_at": "2025-09-19T17:05:25.481309+00:00",
+    "expires_at": "2026-09-19T17:05:25.481309+00:00",
+    "status": "valid"
+  },
+  "user": {
+    "id": 1,
+    "name": "Test User",
+    "organization": "Test Organization"
+  },
+  "device": {
+    "serial": "TEST123456",
+    "model": "Test Device",
+    "type": "Test Type"
+  },
+  "wipe_operation": {
+    "method": "single_pass",
+    "status": "verified",
+    "target_path": "C:\\Users\\study\\AppData\\Local\\Temp\\tmp7kwf5p8t.txt",
+    "size_bytes": 20,
+    "size_human": "20.0 B",
+    "passes_completed": 1,
+    "total_passes": 1,
+    "duration_seconds": 0.1,
+    "verification_hash": null
+  },
+  "verification": {
+    "certificate_hash": "693d57f4ba2b773c85fb72d9b419fef8ac5b4f0324d6b191a9907bf03e66c2a8",
+    "signature_algorithm": "RSA-SHA256",
+    "key_size": 2048,
+    "certificate_authority": "DataWipe API"
+  }
+}

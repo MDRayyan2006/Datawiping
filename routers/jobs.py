@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime, timedelta
 from enum import Enum
 import os
+import logging
 
 from database import get_db, SessionLocal
 from models.wipe_log import WipeLog, WipeMethod, VerificationStatus
@@ -14,6 +15,7 @@ from services.certificate_service import certificate_service
 from services.certificate_db_service import CertificateDBService
 from services.user_service import UserService
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -154,7 +156,7 @@ async def start_wipe_job(
         # Update job status
         job_status[wipe_log.id] = {
             "status": "pending",
-            "progress": {"message": "Job queued for execution"},
+            "progress": {"message": "Job queued for execution", "percentage": 0},
             "started_at": None,
             "completed_at": None,
             "error_message": None
@@ -202,11 +204,35 @@ async def get_job_status(job_id: int, db: Session = Depends(get_db)):
         # Get job status from tracking
         status_info = job_status.get(job_id, {
             "status": "unknown",
-            "progress": {"message": "Status unknown"},
+            "progress": {"message": "Status unknown", "percentage": 0},
             "started_at": None,
             "completed_at": None,
             "error_message": None
         })
+        
+        # Calculate progress based on verification status
+        progress_percentage = 0
+        progress_message = "Status unknown"
+        
+        if wipe_log.verification_status == VerificationStatus.PENDING:
+            progress_percentage = 0
+            progress_message = "Job queued for execution"
+        elif wipe_log.verification_status == VerificationStatus.VERIFIED:
+            progress_percentage = 100
+            progress_message = "Wipe operation completed successfully"
+        elif wipe_log.verification_status == VerificationStatus.FAILED:
+            progress_percentage = 0
+            progress_message = "Wipe operation failed"
+        elif wipe_log.start_time and not wipe_log.end_time:
+            # Job is running
+            progress_percentage = 50
+            progress_message = "Wipe operation in progress"
+        
+        # Update progress in status_info
+        status_info["progress"] = {
+            "message": progress_message,
+            "percentage": progress_percentage
+        }
         
         # Calculate duration
         duration_seconds = None
@@ -340,6 +366,7 @@ async def cancel_job(job_id: int, db: Session = Depends(get_db)):
         # Update job status tracking
         if job_id in job_status:
             job_status[job_id]["status"] = "cancelled"
+            job_status[job_id]["progress"] = {"message": "Job cancelled by user", "percentage": 0}
             job_status[job_id]["completed_at"] = datetime.utcnow()
             job_status[job_id]["error_message"] = "Job cancelled by user"
         
@@ -409,7 +436,7 @@ async def execute_wipe_job(
         # Update job status
         job_status[job_id] = {
             "status": "running",
-            "progress": {"message": "Starting wipe operation"},
+            "progress": {"message": "Starting wipe operation", "percentage": 10},
             "started_at": datetime.utcnow(),
             "completed_at": None,
             "error_message": None
@@ -489,34 +516,50 @@ async def execute_wipe_job(
                 if success and generate_certificate:
                     user = await UserService(db).get_user(wipe_log.user_id)
                     if user:
-                        # Use actual wipe result data if available
-                        if wipe_result:
-                            cert = await certificate_service.generate_certificate(
-                                user_id=user.id,
-                                user_name=user.name,
-                                user_org=user.org,
-                                device_serial=user.device_serial,
-                                device_model="Unknown",
-                                device_type="Unknown",
-                                wipe_method=wipe_method.value,
-                                wipe_status="verified",
-                                target_path=target_path,
-                                size_bytes=wipe_result.size_bytes,
-                                passes_completed=wipe_result.passes_completed,
-                                total_passes=wipe_result.total_passes,
-                                duration_seconds=wipe_result.duration_seconds,
-                                verification_hash=wipe_result.verification_hash,
-                            )
-                        else:
-                            # No certificate without an actual successful wipe result
-                            cert = None
-                        wipe_log.certificate_path = cert.certificate_path
-                        db.commit()
+                        try:
+                            # Use actual wipe result data if available
+                            if wipe_result:
+                                cert = await certificate_service.generate_certificate(
+                                    user_id=user.id,
+                                    user_name=user.name,
+                                    user_org=user.org,
+                                    device_serial=user.device_serial,
+                                    device_model="Unknown",
+                                    device_type="Unknown",
+                                    wipe_method=wipe_method.value,
+                                    wipe_status="verified",
+                                    target_path=target_path,
+                                    size_bytes=wipe_result.size_bytes,
+                                    passes_completed=wipe_result.passes_completed,
+                                    total_passes=wipe_result.total_passes,
+                                    duration_seconds=wipe_result.duration_seconds,
+                                    verification_hash=wipe_result.verification_hash,
+                                )
+                                
+                                # Save certificate to database
+                                from services.certificate_db_service import CertificateDBService
+                                cert_db_service = CertificateDBService(db)
+                                await cert_db_service.create_certificate(cert, wipe_log.id)
+                                
+                                # Update wipe log with certificate path
+                                wipe_log.certificate_path = cert.certificate_path
+                                db.commit()
+                                
+                                logger.info(f"Certificate generated and saved: {cert.certificate_id}")
+                            else:
+                                # No certificate without an actual successful wipe result
+                                logger.warning("No wipe result available for certificate generation")
+                        except Exception as e:
+                            logger.error(f"Failed to generate certificate: {e}")
+                            # Continue without certificate - don't fail the entire job
 
                 # Update job status cache from DB
                 job_status[job_id] = {
                     "status": "completed" if success else "failed",
-                    "progress": {"message": "Wipe operation completed" if success else "Wipe operation failed"},
+                    "progress": {
+                        "message": "Wipe operation completed" if success else "Wipe operation failed",
+                        "percentage": 100 if success else 0
+                    },
                     "started_at": wipe_log.start_time,
                     "completed_at": wipe_log.end_time,
                     "error_message": None if success else (wipe_result.error_message if wipe_result and wipe_result.error_message else "Wipe failed"),
@@ -530,7 +573,7 @@ async def execute_wipe_job(
         # Update job status with error
         job_status[job_id] = {
             "status": "failed",
-            "progress": {"message": "Wipe operation failed"},
+            "progress": {"message": "Wipe operation failed", "percentage": 0},
             "started_at": datetime.utcnow(),
             "completed_at": datetime.utcnow(),
             "error_message": str(e)

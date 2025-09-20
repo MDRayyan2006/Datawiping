@@ -49,7 +49,13 @@ async def download_certificate_pdf(
         return FileResponse(
             path=pdf_path,
             filename=f"certificate_{certificate_id}.pdf",
-            media_type="application/pdf"
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}.pdf",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization"
+            }
         )
         
     except HTTPException:
@@ -97,7 +103,10 @@ async def download_certificate_json(
         return JSONResponse(
             content=json_data,
             headers={
-                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}.json"
+                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}.json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization"
             }
         )
         
@@ -146,7 +155,10 @@ async def download_certificate_signature(
         return JSONResponse(
             content=signature_data,
             headers={
-                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}_signature.json"
+                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}_signature.json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization"
             }
         )
         
@@ -227,7 +239,13 @@ Wipe Method: {certificate.wipe_method}
         return FileResponse(
             path=temp_zip.name,
             filename=f"certificate_{certificate_id}_package.zip",
-            media_type="application/zip"
+            media_type="application/zip",
+            headers={
+                "Content-Disposition": f"attachment; filename=certificate_{certificate_id}_package.zip",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Authorization"
+            }
         )
         
     except HTTPException:
